@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 import main
+import os
+import random
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -12,7 +14,8 @@ async def on_ready():
 
 @bot.command()
 async def hello(ctx):
-    await ctx.send('Cześć!')
+    slowa = ["Cześć!", "Witaj!", "Dzień Dobry!"]
+    await ctx.send(random.choice(slowa))
 
 @bot.command()
 async def bye(ctx):
@@ -22,4 +25,14 @@ async def bye(ctx):
 async def generate_password(ctx, length = 8):
     await ctx.send(main.gen_pass(length))
 
-bot.run("MTI0NTA1OTgxMDc4MTU2MDk3NQ.GtTtgM.M4EjurojhJ2f42b5IjfZ4TuxOL1F9GGFdlEHAA")
+@bot.command()
+async def mem(ctx):
+    nazwy = os.listdir("images")
+    losowy_obrazek = random.choice(nazwy)
+    with open('images/' + losowy_obrazek, 'rb') as f:
+        # Zapiszmy przekonwertowany plik biblioteki Discord w tej zmiennej!
+        picture = discord.File(f)
+    # Możemy następnie wysłać ten plik jako parametr!
+    await ctx.send(file=picture)
+
+bot.run("")
